@@ -54,13 +54,17 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../QtSudoku/gamefield.cpp \
 		../QtSudoku/main.cpp \
-		../QtSudoku/mainwindow.cpp moc_gamefield.cpp \
-		moc_mainwindow.cpp
+		../QtSudoku/mainwindow.cpp \
+		../QtSudoku/solver.cpp moc_gamefield.cpp \
+		moc_mainwindow.cpp \
+		moc_solver.cpp
 OBJECTS       = gamefield.o \
 		main.o \
 		mainwindow.o \
+		solver.o \
 		moc_gamefield.o \
-		moc_mainwindow.o
+		moc_mainwindow.o \
+		moc_solver.o
 DIST          = /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/common/unix.conf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/common/linux.conf \
@@ -336,6 +340,7 @@ DIST          = /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/spec_pre.prf 
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/spec_post.prf \
+		../QtSudoku/.qmake.stash \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -358,9 +363,11 @@ DIST          = /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/spec_pre.prf 
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/lex.prf \
 		../QtSudoku/QtSudoku.pro ../QtSudoku/Tile.h \
 		../QtSudoku/gamefield.h \
-		../QtSudoku/mainwindow.h ../QtSudoku/gamefield.cpp \
+		../QtSudoku/mainwindow.h \
+		../QtSudoku/solver.h ../QtSudoku/gamefield.cpp \
 		../QtSudoku/main.cpp \
-		../QtSudoku/mainwindow.cpp
+		../QtSudoku/mainwindow.cpp \
+		../QtSudoku/solver.cpp
 QMAKE_TARGET  = QtSudoku
 DESTDIR       = 
 TARGET        = QtSudoku
@@ -647,6 +654,7 @@ Makefile: ../QtSudoku/QtSudoku.pro /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/lin
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/qt_config.prf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/toolchain.prf \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/default_pre.prf \
@@ -947,6 +955,7 @@ Makefile: ../QtSudoku/QtSudoku.pro /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/lin
 /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/qt_config.prf:
 /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/toolchain.prf:
 /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/default_pre.prf:
@@ -986,8 +995,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtSudoku/Tile.h ../QtSudoku/gamefield.h ../QtSudoku/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../QtSudoku/gamefield.cpp ../QtSudoku/main.cpp ../QtSudoku/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtSudoku/Tile.h ../QtSudoku/gamefield.h ../QtSudoku/mainwindow.h ../QtSudoku/solver.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../QtSudoku/gamefield.cpp ../QtSudoku/main.cpp ../QtSudoku/mainwindow.cpp ../QtSudoku/solver.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../QtSudoku/mainwindow.ui $(DISTDIR)/
 
 
@@ -1020,9 +1029,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++1z -Wall -Wextra -fPIC -dM -E -o moc_predefs.h /home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_gamefield.cpp moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_gamefield.cpp moc_mainwindow.cpp moc_solver.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_gamefield.cpp moc_mainwindow.cpp
+	-$(DEL_FILE) moc_gamefield.cpp moc_mainwindow.cpp moc_solver.cpp
 moc_gamefield.cpp: ../QtSudoku/gamefield.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QObject \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject.h \
@@ -1285,6 +1294,102 @@ moc_mainwindow.cpp: ../QtSudoku/mainwindow.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/libexec/moc
 	/home/vladnasirov/Qt/6.5.1/gcc_64/libexec/moc $(DEFINES) --include /home/vladnasirov/Programming/QT/Studying/PET_PROJ/QTSUDOKU/build-QtSudoku-Desktop_Qt_6_5_1_GCC_64bit-Debug/moc_predefs.h -I/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/linux-g++ -I/home/vladnasirov/Programming/QT/Studying/PET_PROJ/QTSUDOKU/QtSudoku -I/home/vladnasirov/Qt/6.5.1/gcc_64/include -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../QtSudoku/mainwindow.h -o moc_mainwindow.cpp
 
+moc_solver.cpp: ../QtSudoku/solver.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QObject \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qglobal.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qconfig.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtnoop.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qassert.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtypes.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtversion.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qlogging.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qflags.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qatomic.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qforeach.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qttypetraits.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmalloc.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qminmax.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qoverload.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qswap.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtresource.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qttranslation.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstring.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qchar.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringview.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qpair.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qarraydataops.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringfwd.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/q20type_traits.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qanystringview.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qlist.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qiterator.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcompare.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qfloat16.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmath.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qiterable.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qscopeguard.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbindingstorage.h \
+		moc_predefs.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/libexec/moc
+	/home/vladnasirov/Qt/6.5.1/gcc_64/libexec/moc $(DEFINES) --include /home/vladnasirov/Programming/QT/Studying/PET_PROJ/QTSUDOKU/build-QtSudoku-Desktop_Qt_6_5_1_GCC_64bit-Debug/moc_predefs.h -I/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/linux-g++ -I/home/vladnasirov/Programming/QT/Studying/PET_PROJ/QTSUDOKU/QtSudoku -I/home/vladnasirov/Qt/6.5.1/gcc_64/include -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../QtSudoku/solver.h -o moc_solver.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -1400,12 +1505,27 @@ gamefield.o: ../QtSudoku/gamefield.cpp ../QtSudoku/gamefield.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbindingstorage.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QVector \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qvector.h \
-		../QtSudoku/Tile.h
+		../QtSudoku/Tile.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QDebug \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qdebug.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtextstream.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringconverter_base.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmap.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qset.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qhash.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/q20memory.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QRandomGenerator \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qrandom.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamefield.o ../QtSudoku/gamefield.cpp
 
-main.o: ../QtSudoku/main.cpp ../QtSudoku/mainwindow.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/QMainWindow \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qmainwindow.h \
+main.o: ../QtSudoku/main.cpp /home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/QApplication \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qapplication.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qtguiglobal.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qglobal.h \
@@ -1454,18 +1574,14 @@ main.o: ../QtSudoku/main.cpp ../QtSudoku/mainwindow.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qtguiexports.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qtwidgets-config.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qtwidgetsexports.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qwidget.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qwindowdefs.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qnamespace.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtmetamacros.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcoreapplication.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstring.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qchar.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringview.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbytearray.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtmetamacros.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qarraydata.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qpair.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qarraydatapointer.h \
@@ -1482,6 +1598,11 @@ main.o: ../QtSudoku/main.cpp ../QtSudoku/mainwindow.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qutf8stringview.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringtokenizer.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qeventloop.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qlist.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qhashfunctions.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qiterator.h \
@@ -1489,7 +1610,6 @@ main.o: ../QtSudoku/main.cpp ../QtSudoku/mainwindow.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringlist.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qalgorithms.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringmatcher.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcoreevent.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qscopedpointer.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmetatype.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcompare.h \
@@ -1504,68 +1624,20 @@ main.o: ../QtSudoku/main.cpp ../QtSudoku/mainwindow.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qscopeguard.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject_impl.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbindingstorage.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmargins.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qaction.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qkeysequence.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qicon.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsize.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpixmap.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpaintdevice.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qrect.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qpoint.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qcolor.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qrgb.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qrgba64.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qshareddata.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qimage.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpixelformat.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qtransform.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpolygon.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qregion.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qline.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qvariant.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qnativeinterface.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qdebug.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtextstream.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringconverter_base.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmap.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qshareddata_impl.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qset.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qhash.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qvarlengtharray.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/q20memory.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpalette.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qbrush.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qfont.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qfontmetrics.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qfontinfo.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qsizepolicy.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qcursor.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qbitmap.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qevent.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qiodevice.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qpointer.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qurl.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qeventpoint.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qvector2d.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qvectornd.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpointingdevice.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qinputdevice.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qscreen.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QList \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QObject \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QRect \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QSize \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QSizeF \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/QTransform \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qnativeinterface.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qtabwidget.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/QApplication \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qapplication.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcoreapplication.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qeventloop.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcoreapplication_platform.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qfuture.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qfutureinterface.h \
@@ -1579,12 +1651,33 @@ main.o: ../QtSudoku/main.cpp ../QtSudoku/mainwindow.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qelapsedtimer.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qrunnable.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qexception.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qpointer.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qpromise.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qvariant.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qpoint.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsize.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmargins.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qcursor.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qbitmap.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpixmap.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qrect.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qcolor.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qrgb.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qrgba64.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qimage.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpixelformat.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qtransform.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qpolygon.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qregion.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qline.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qguiapplication.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qinputmethod.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qlocale.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qguiapplication_platform.h \
 		../QtSudoku/gamefield.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QObject \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QVector \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qvector.h \
 		../QtSudoku/Tile.h
@@ -1749,14 +1842,140 @@ mainwindow.o: ../QtSudoku/mainwindow.cpp ../QtSudoku/mainwindow.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/QTransform \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qnativeinterface.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qtabwidget.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QVariant \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/QApplication \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qapplication.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qeventloop.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcoreapplication_platform.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qfuture.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmutex.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtsan_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qresultstore.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qthreadpool.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qthread.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qrunnable.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qexception.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qpromise.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qguiapplication.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qinputmethod.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qlocale.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui/qguiapplication_platform.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/QMenuBar \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qmenubar.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qmenu.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/QStatusBar \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/qstatusbar.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../QtSudoku/mainwindow.cpp
+
+solver.o: ../QtSudoku/solver.cpp ../QtSudoku/solver.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QObject \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qnamespace.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qglobal.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtversionchecks.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qconfig.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtcore-config.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtconfigmacros.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtcoreexports.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtpreprocessorsupport.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtnoop.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qassert.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtypes.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtclasshelpermacros.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtversion.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsysinfo.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qlogging.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qflags.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcompare_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qatomic.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qconstructormacros.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qdarwinhelpers.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qexceptionhandling.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qforeach.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtdeprecationmarkers.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qttypetraits.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qfunctionpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmalloc.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qminmax.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qnumeric.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qoverload.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qswap.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtenvironmentvariables.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtresource.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qttranslation.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qversiontagging.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstring.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qchar.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringview.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbytearray.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qrefcount.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qarraydata.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qpair.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qarraydataops.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qxptype_traits.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringfwd.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/q20type_traits.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringliteral.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qanystringview.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qlist.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qiterator.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringlist.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qalgorithms.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcoreevent.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmetatype.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcompare.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qdatastream.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qfloat16.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmath.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qiterable.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qscopeguard.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject_impl.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbindingstorage.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o solver.o ../QtSudoku/solver.cpp
 
 moc_gamefield.o: moc_gamefield.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_gamefield.o moc_gamefield.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_solver.o: moc_solver.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_solver.o moc_solver.cpp
 
 ####### Install
 

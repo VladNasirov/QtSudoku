@@ -11,12 +11,14 @@ CONFIG += c++17
 SOURCES += \
     gamefield.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    solver.cpp
 
 HEADERS += \
     Tile.h \
     gamefield.h \
-    mainwindow.h
+    mainwindow.h \
+    solver.h
 
 FORMS += \
     mainwindow.ui

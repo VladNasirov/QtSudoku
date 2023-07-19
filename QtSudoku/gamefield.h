@@ -10,12 +10,22 @@ class GameField : public QObject
 public:
     explicit GameField(QObject *parent = nullptr);
     void shuffleField();
-    void generateSudoku(unsigned int difficulty);
+    void generateSudoku();
     bool checkRows();
     bool checkColumns();
     bool checkBoxes();
-    void generateBaseField(int nR, int nC);
+    void generateBaseField();
     void printField();
+
+    void swapCols(int index1, int index2);
+    void swapRows(int index1, int index2);
+    void transpose();
+    void swapRowsSmall();
+    void swapColsSmall();
+    void swapRowsArea();
+    void swapColsArea();
+
+    void fillVecFunc();
 signals:
 
 
@@ -23,8 +33,10 @@ signals:
 private:
     QVector<QVector<Tile>> field;
     QVector<QVector<Tile>> correctAnswer;
+    QVector<void(GameField::*)()> funcVec;
     int numRows;
     int numCols;
+    int sudokuPower;
 };
 
 #endif // GAMEFIELD_H

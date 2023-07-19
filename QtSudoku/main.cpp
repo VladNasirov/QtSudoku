@@ -10,5 +10,8 @@ int main(int argc, char *argv[])
     //w.show();
     GameField g;
     g.printField();
+    g.shuffleField();
+    qInfo()<<" swapped : ";
+    g.printField();
     return a.exec();
 }
