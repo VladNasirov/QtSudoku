@@ -26,6 +26,18 @@ public:
     void swapColsArea();
 
     void fillVecFunc();
+
+    int getSudokuPower();
+    void setSudokuPower(int pow);
+
+    int getNumRows();
+    void setNumRows(int r);
+
+    int getNumCols();
+    void setNumCols(int c);
+
+    QVector<QVector<Tile>> getField();
+
 signals:
 
 

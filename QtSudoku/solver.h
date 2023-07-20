@@ -3,7 +3,7 @@
 
 #include "gamefield.h"
 #include <QObject>
-
+#include <QSharedPointer>
 class Solver : public QObject
 {
     Q_OBJECT
@@ -17,7 +17,7 @@ signals:
 
 private:
     int solutionNumber;
-    QVector<QVector<Tile>> GameField;
+    QSharedPointer<GameField> field;
 };
 
 #endif // SOLVER_H

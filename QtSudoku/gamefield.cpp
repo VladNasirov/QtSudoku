@@ -21,6 +21,41 @@ void GameField::fillVecFunc()
     funcVec.push_back(&GameField::swapColsSmall);
 }
 
+int GameField::getSudokuPower()
+{
+    return sudokuPower;
+}
+
+void GameField::setSudokuPower(int pow)
+{
+    sudokuPower=pow;
+}
+
+int GameField::getNumRows()
+{
+    return NumRows;
+}
+
+void GameField::setNumRows(int r)
+{
+    NumRows=r;
+}
+
+int GameField::getNumCols()
+{
+    return NumCols;
+}
+
+void GameField::setNumCols(int c)
+{
+    NumCols=c;
+}
+
+QVector<QVector<Tile> > GameField::getField()
+{
+    return field;
+}
+
 void GameField::shuffleField()
 {
     int shuffleNumber = QRandomGenerator::global()->bounded(0, 100);

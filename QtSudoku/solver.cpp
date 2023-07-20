@@ -5,9 +5,19 @@ Solver::Solver(QObject *parent)
 {
 
 }
-bool Solver::findEmptyCell()
+bool Solver::findEmptyCell()//переписать
 {
-
+    for(int i=0; i<field->getNumRows(); i++)
+    {
+        for(int j=0; j<field->getNumCols(); j++)
+        {
+            if(field->getField()[i][j].value==-1)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 bool Solver::isValidMove(const QVector<QVector<Tile>>& sudoku, int row, int col, Tile num) {
     // Проверьте, что num не нарушает правила судоку для строки, столбца и малого квадрата 3x3
@@ -16,8 +26,7 @@ bool Solver::isValidMove(const QVector<QVector<Tile>>& sudoku, int row, int col,
 
 bool Solver::solveSudoku(QVector<QVector<Tile>>& sudoku) {
     int row, col;
-    if (!findEmptyCell(sudoku, row, col)) {
-        // Найдено решение, если нет пустых клеток
+    if (!findEmptyCell()) {
         return true;
     }
 
