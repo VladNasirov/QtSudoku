@@ -1295,6 +1295,7 @@ moc_mainwindow.cpp: ../QtSudoku/mainwindow.h \
 	/home/vladnasirov/Qt/6.5.1/gcc_64/libexec/moc $(DEFINES) --include /home/vladnasirov/Programming/QT/Studying/PET_PROJ/QTSUDOKU/build-QtSudoku-Desktop_Qt_6_5_1_GCC_64bit-Debug/moc_predefs.h -I/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/linux-g++ -I/home/vladnasirov/Programming/QT/Studying/PET_PROJ/QTSUDOKU/QtSudoku -I/home/vladnasirov/Qt/6.5.1/gcc_64/include -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../QtSudoku/mainwindow.h -o moc_mainwindow.cpp
 
 moc_solver.cpp: ../QtSudoku/solver.h \
+		../QtSudoku/gamefield.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QObject \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs.h \
@@ -1386,6 +1387,13 @@ moc_solver.cpp: ../QtSudoku/solver.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qscopeguard.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject_impl.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QVector \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qvector.h \
+		../QtSudoku/Tile.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QSharedPointer \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
 		moc_predefs.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/libexec/moc
 	/home/vladnasirov/Qt/6.5.1/gcc_64/libexec/moc $(DEFINES) --include /home/vladnasirov/Programming/QT/Studying/PET_PROJ/QTSUDOKU/build-QtSudoku-Desktop_Qt_6_5_1_GCC_64bit-Debug/moc_predefs.h -I/home/vladnasirov/Qt/6.5.1/gcc_64/mkspecs/linux-g++ -I/home/vladnasirov/Programming/QT/Studying/PET_PROJ/QTSUDOKU/QtSudoku -I/home/vladnasirov/Qt/6.5.1/gcc_64/include -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtWidgets -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtGui -I/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/gcc/x86_64-linux-gnu/11/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../QtSudoku/solver.h -o moc_solver.cpp
@@ -1875,6 +1883,7 @@ mainwindow.o: ../QtSudoku/mainwindow.cpp ../QtSudoku/mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../QtSudoku/mainwindow.cpp
 
 solver.o: ../QtSudoku/solver.cpp ../QtSudoku/solver.h \
+		../QtSudoku/gamefield.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QObject \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobjectdefs.h \
@@ -1965,7 +1974,14 @@ solver.o: ../QtSudoku/solver.cpp ../QtSudoku/solver.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qtaggedpointer.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qscopeguard.h \
 		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qobject_impl.h \
-		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbindingstorage.h
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qbindingstorage.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QVector \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qvector.h \
+		../QtSudoku/Tile.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/QSharedPointer \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qshareddata.h \
+		/home/vladnasirov/Qt/6.5.1/gcc_64/include/QtCore/qsharedpointer_impl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o solver.o ../QtSudoku/solver.cpp
 
 moc_gamefield.o: moc_gamefield.cpp 

@@ -9,15 +9,16 @@ class Solver : public QObject
     Q_OBJECT
 public:
     explicit Solver(QObject *parent = nullptr);
-    bool findEmptyCell();
-    bool isValidMove(const QVector<QVector<Tile>>& sudoku, int row, int col, Tile num);
-    bool solveSudoku(QVector<QVector<Tile>>& sudoku);
-    int countSudokuSolutions(QVector<QVector<Tile>> sudoku);
+    bool findEmptyCell(int& row, int& col);
+    void setField(GameField& gf);
+    bool isValidMove(int row, int col, int num);
+    bool solveSudoku();
+    int countSudokuSolutions();
 signals:
 
 private:
     int solutionNumber;
-    QSharedPointer<GameField> field;
+    GameField copyfield;
 };
 
 #endif // SOLVER_H

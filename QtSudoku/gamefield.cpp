@@ -8,8 +8,11 @@ GameField::GameField(QObject *parent)
     sudokuPower=3;
     numRows=sudokuPower*sudokuPower;
     numCols=sudokuPower*sudokuPower;
+    dif=difficulty::Easy;
     fillVecFunc();
     generateBaseField();
+    hideField();
+    checkBox(6);
 }
 
 void GameField::fillVecFunc()
@@ -33,27 +36,37 @@ void GameField::setSudokuPower(int pow)
 
 int GameField::getNumRows()
 {
-    return NumRows;
+    return numRows;
 }
 
 void GameField::setNumRows(int r)
 {
-    NumRows=r;
+    numRows=r;
 }
 
 int GameField::getNumCols()
 {
-    return NumCols;
+    return numCols;
 }
 
 void GameField::setNumCols(int c)
 {
-    NumCols=c;
+    numCols=c;
+}
+
+void GameField::setValue(int r, int c, int num)
+{
+    field[r][c].value=num;
 }
 
 QVector<QVector<Tile> > GameField::getField()
 {
     return field;
+}
+
+void GameField::setField(QVector<QVector<Tile>> f)
+{
+    field=f;
 }
 
 void GameField::shuffleField()
@@ -163,18 +176,101 @@ void GameField::swapColsArea()
     }
 }
 
+bool GameField::checkRow(int r)
+{
+    QVector<int> tmp_r;
+    for(int c=0; c<numCols; c++)
+    {
+        tmp_r.push_back(field[r][c].value);
+    }
+    for (int num : tmp_r) {
+        if (num == 0) {
+            continue;
+        }
+        if (tmp_r.count(num) > 1) {
+            return false; // Найдено совпадающее число, кроме целевого
+        }
+    }
+    return true;
+}
+
+bool GameField::checkColumn(int c)
+{
+    QVector<int> tmp_c;
+    for(int r=0; r<numRows; r++)
+    {
+        tmp_c.push_back(field[r][c].value);
+    }
+    for (int num : tmp_c) {
+        if (num == 0) {
+            continue;
+        }
+        if (tmp_c.count(num) > 1) {
+            return false; // Найдено совпадающее число, кроме целевого
+        }
+    }
+    return true;
+}
+
+bool GameField::checkBox(int bn)
+{
+    QVector<int> box;
+    int bc=bn%sudokuPower;
+    int br=bn/sudokuPower;
+    int bcMax=bc+sudokuPower;
+    int brMax=br+sudokuPower;
+    for(br; br<brMax; br++)
+    {
+        for(bc; bc<bcMax; bc++)
+        {
+            box.push_back(field[br][bc].value);
+        }
+    }
+    for (int num : box) {
+        if (num == 0) {
+            continue;
+        }
+        if (box.count(num) > 1) {
+            return false; // Найдено совпадающее число, кроме целевого
+        }
+    }
+    return true;
+
+}
+
 bool GameField::checkRows()
 {
+    for(int r=0; r<numRows; r++)
+    {
+        if(!checkRow(r))
+        {
+            return false;
+        }
+    }
     return true;
 }
 
 bool GameField::checkColumns()
 {
-     return true;
+    for(int c=0; c<numCols; c++)
+    {
+        if(!checkColumn(c))
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool GameField::checkBoxes()
 {
+    for(int b=0; b<sudokuPower*sudokuPower; b++)
+    {
+        if(!checkBox(b))
+        {
+            return false;
+        }
+    }
      return true;
 }
 
@@ -221,5 +317,44 @@ void GameField::printField()
             std::cout<<"["<<field[r][c].row<<field[r][c].column<<"]"<<"="<<field[r][c].value<<" ";
         }
         std::cout<<std::endl;
+    }
+}
+
+void GameField::hideField()//добавить в зависимости от размера судоку
+{
+
+    if(dif==difficulty::Easy)//10...20
+    {
+        int lowerBound = QRandomGenerator::global()->bounded(10, 21);
+        hideTiles(lowerBound);
+    }
+    else if(dif==difficulty::Normal)//21...35
+    {
+        int lowerBound = QRandomGenerator::global()->bounded(21, 36);
+        hideTiles(lowerBound);
+    }
+    else if(dif==difficulty::Hard)//36...50
+    {
+        int lowerBound = QRandomGenerator::global()->bounded(36, 51);
+        hideTiles(lowerBound);
+    }
+    else if(dif==difficulty::Expert)//51...64 //min 17
+    {
+        int lowerBound = QRandomGenerator::global()->bounded(51, 65);
+        hideTiles(lowerBound);
+    }
+}
+
+void GameField::hideTiles(int hidenumber)
+{
+    while(hidenumber>0)
+    {
+    int r = QRandomGenerator::global()->bounded(0, 9);
+    int c = QRandomGenerator::global()->bounded(0, 9);
+    if(field[r][c].value!=0)
+    {
+        field[r][c].value=0;
+        hidenumber--;
+    }
     }
 }

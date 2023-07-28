@@ -4,6 +4,15 @@
 #include <QObject>
 #include <QVector>
 #include "Tile.h"
+
+enum class difficulty
+{
+    Easy,
+    Normal,
+    Hard,
+    Expert
+};
+
 class GameField : public QObject
 {
     Q_OBJECT
@@ -11,9 +20,16 @@ public:
     explicit GameField(QObject *parent = nullptr);
     void shuffleField();
     void generateSudoku();
+
     bool checkRows();
     bool checkColumns();
     bool checkBoxes();
+
+    bool checkRow(int r);
+    bool checkColumn(int c);
+    bool checkBox(int bn);
+
+
     void generateBaseField();
     void printField();
 
@@ -36,7 +52,13 @@ public:
     int getNumCols();
     void setNumCols(int c);
 
+    void setValue(int r, int c, int num);
+
+
+    void hideField();
+    void hideTiles(int hidenumber);
     QVector<QVector<Tile>> getField();
+    void setField(QVector<QVector<Tile>> f);
 
 signals:
 
@@ -49,6 +71,7 @@ private:
     int numRows;
     int numCols;
     int sudokuPower;
+    difficulty dif;
 };
 
 #endif // GAMEFIELD_H
