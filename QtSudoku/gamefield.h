@@ -54,12 +54,13 @@ public:
 
     void setValue(int r, int c, int num);
 
+    void shiftRow(int r, int num);
 
     void hideField();
     void hideTiles(int hidenumber);
     QVector<QVector<Tile>> getField();
     void setField(QVector<QVector<Tile>> f);
-
+    GameField(const GameField& gf);
 signals:
 
 

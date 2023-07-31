@@ -10,7 +10,7 @@ class Solver : public QObject
 public:
     explicit Solver(QObject *parent = nullptr);
     bool findEmptyCell(int& row, int& col);
-    void setField(GameField& gf);
+    void setField(GameField* gf);
     bool isValidMove(int row, int col, int num);
     bool solveSudoku();
     int countSudokuSolutions();

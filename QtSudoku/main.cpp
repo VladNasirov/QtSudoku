@@ -9,12 +9,16 @@ int main(int argc, char *argv[])
     //MainWindow w;
 
     //w.show();
-    QSharedPointer<GameField> sharedPtrGF(new GameField);
-    Solver s(&a, sharedPtrGF);
-    sharedPtrGF->printField();
-    sharedPtrGF->shuffleField();
+    GameField gf;
+    Solver s;
+    gf.printField();
+    gf.shuffleField();
     qInfo()<<" swapped : ";
-    sharedPtrGF->printField();
+    gf.printField();
+    gf.hideField();
+    qInfo()<<"With hidden tiles: ";
+    gf.printField();
+    s.setField(&gf);
     qInfo()<<s.countSudokuSolutions();
     return a.exec();
 }

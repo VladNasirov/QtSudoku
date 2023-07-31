@@ -11,8 +11,6 @@ GameField::GameField(QObject *parent)
     dif=difficulty::Easy;
     fillVecFunc();
     generateBaseField();
-    hideField();
-    checkBox(6);
 }
 
 void GameField::fillVecFunc()
@@ -69,6 +67,18 @@ void GameField::setField(QVector<QVector<Tile>> f)
     field=f;
 }
 
+GameField::GameField(const GameField &gf)
+{
+//    this->setField(gf.getField());
+//    this->setNumCols(gf.getNumCols());
+//    this->setNumRows(gf.getNumRows());
+//    this->setSudokuPower(gf.getSudokuPower());
+    field=gf.field;
+    numCols=gf.numCols;
+    numRows=gf.numRows;
+    sudokuPower=gf.sudokuPower;
+}
+
 void GameField::shuffleField()
 {
     int shuffleNumber = QRandomGenerator::global()->bounded(0, 100);
@@ -90,6 +100,7 @@ void GameField::generateSudoku()
 void GameField::transpose()
 {
     qInfo()<<Q_FUNC_INFO;
+    //printField();
     QVector<QVector<Tile>> tmp;
     tmp.resize(numRows);
     for (int i = 0; i < numRows; ++i) {
@@ -107,6 +118,7 @@ void GameField::transpose()
 void GameField::swapRowsSmall()
 {
     qInfo()<<Q_FUNC_INFO;
+     //printField();
     int lowerBound = QRandomGenerator::global()->bounded(0, sudokuPower);
     int randomR1 = QRandomGenerator::global()->bounded(lowerBound, lowerBound+sudokuPower);
     int randomR2;
@@ -127,6 +139,7 @@ void GameField::swapRows(int index1, int index2)
 void GameField::swapColsSmall()
 {
     qInfo()<<Q_FUNC_INFO;
+    // printField();
     int lowerBound = QRandomGenerator::global()->bounded(0, sudokuPower);
     int randomR1 = QRandomGenerator::global()->bounded(lowerBound, lowerBound+sudokuPower);
     int randomR2;
@@ -149,6 +162,7 @@ void GameField::swapCols(int index1, int index2)
 void GameField::swapRowsArea()
 {
     qInfo()<<Q_FUNC_INFO;
+     //printField();
     int randomR1 = QRandomGenerator::global()->bounded(0, sudokuPower);
     int randomR2;
     do
@@ -164,6 +178,7 @@ void GameField::swapRowsArea()
 void GameField::swapColsArea()
 {
     qInfo()<<Q_FUNC_INFO;
+    //printField();
     int randomR1 = QRandomGenerator::global()->bounded(0, sudokuPower);
     int randomR2;
     do
@@ -276,7 +291,15 @@ bool GameField::checkBoxes()
 
 void GameField::generateBaseField()
 {
-
+    int num=1;
+     QVector<int> tmp;
+    tmp.resize(numRows);
+     for(int i=0; i<tmp.size(); i++)
+    {
+        tmp[i]=num;
+        num++;
+    }
+    num=1;
     field.resize(numRows);
      for (int i = 0; i < numRows; ++i) {
          field[i].resize(numCols);
@@ -287,22 +310,30 @@ void GameField::generateBaseField()
         {
             field[r][c].row=r;
             field[r][c].column=c;
-            if((c+r*8+1)>9)//for other value
-            {
-                if((c+r*8+1)%9==0)
-                {
-                    field[r][c].value=9;
-                }
-                else
-                {
-                    field[r][c].value=(c+r*8+1)%9;
-                }
-            }
-            else
-            {
-             field[r][c].value=c+r*8+1;
-            }
+            field[r][c].value=num;
+            num++;
         }
+        num=1;
+    }
+    for(int i=1; i<numRows; i++)
+    {
+        shiftRow(i, sudokuPower*i);
+        if(i>sudokuPower-1)
+        {
+
+            int tmpshift=i/sudokuPower;
+            shiftRow(i, tmpshift);
+        }
+    }
+}
+
+void GameField::shiftRow(int row, int shift)
+{
+    shift = shift % numCols; // Убедимся, что сдвиг находится в пределах размера строки
+    QVector<Tile> tempRow = field[row];
+    for (int i = 0; i < numCols; ++i) {
+        int newIndex = (i + numCols - shift) % numCols;
+        field[row][newIndex] = tempRow[i];
     }
 }
 
