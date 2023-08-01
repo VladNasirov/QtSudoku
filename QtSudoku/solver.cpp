@@ -27,7 +27,7 @@ void Solver::setField(GameField* gf)
     copyfield.setNumCols(gf->getNumCols());
     copyfield.setNumRows(gf->getNumRows());
     copyfield.setSudokuPower(gf->getSudokuPower());
-    copyfield.printField();
+    //copyfield.printField();
 }
 bool Solver::isValidMove(int row, int col, int num) {
     // Проверьте, что num не нарушает правила судоку для строки, столбца и малого квадрата 3x3

@@ -8,7 +8,7 @@ GameField::GameField(QObject *parent)
     sudokuPower=3;
     numRows=sudokuPower*sudokuPower;
     numCols=sudokuPower*sudokuPower;
-    dif=difficulty::Easy;
+    dif=difficulty::Normal;
     fillVecFunc();
     generateBaseField();
 }
@@ -18,8 +18,8 @@ void GameField::fillVecFunc()
     funcVec.push_back(&GameField::transpose);
     funcVec.push_back(&GameField::swapColsArea);
     funcVec.push_back(&GameField::swapRowsArea);
-    funcVec.push_back(&GameField::swapRowsSmall);
-    funcVec.push_back(&GameField::swapColsSmall);
+    funcVec.push_back(&GameField::swapRowsSmall);//
+    funcVec.push_back(&GameField::swapColsSmall);//weird
 }
 
 int GameField::getSudokuPower()
@@ -55,6 +55,11 @@ void GameField::setNumCols(int c)
 void GameField::setValue(int r, int c, int num)
 {
     field[r][c].value=num;
+}
+
+void GameField::setDifficulty(difficulty d)
+{
+    dif=d;
 }
 
 QVector<QVector<Tile> > GameField::getField()
@@ -119,12 +124,12 @@ void GameField::swapRowsSmall()
 {
     qInfo()<<Q_FUNC_INFO;
      //printField();
-    int lowerBound = QRandomGenerator::global()->bounded(0, sudokuPower);
-    int randomR1 = QRandomGenerator::global()->bounded(lowerBound, lowerBound+sudokuPower);
+    int Area = QRandomGenerator::global()->bounded(0, sudokuPower);
+    int randomR1 = QRandomGenerator::global()->bounded(Area*sudokuPower, Area*sudokuPower+sudokuPower);
     int randomR2;
     do
     {
-        randomR2 = QRandomGenerator::global()->bounded(lowerBound, lowerBound+sudokuPower);
+        randomR2 = QRandomGenerator::global()->bounded(Area*sudokuPower, Area*sudokuPower+sudokuPower);
     }while(randomR1==randomR2);
 
     swapRows(randomR1, randomR2);
@@ -140,12 +145,12 @@ void GameField::swapColsSmall()
 {
     qInfo()<<Q_FUNC_INFO;
     // printField();
-    int lowerBound = QRandomGenerator::global()->bounded(0, sudokuPower);
-    int randomR1 = QRandomGenerator::global()->bounded(lowerBound, lowerBound+sudokuPower);
+    int Area = QRandomGenerator::global()->bounded(0, sudokuPower);
+    int randomR1 = QRandomGenerator::global()->bounded(Area*sudokuPower, Area*sudokuPower+sudokuPower);
     int randomR2;
     do
     {
-        randomR2 = QRandomGenerator::global()->bounded(lowerBound, lowerBound+sudokuPower);
+        randomR2 = QRandomGenerator::global()->bounded(Area*sudokuPower, Area*sudokuPower+sudokuPower);
     }while(randomR1==randomR2);
     swapCols(randomR1, randomR2);
 }
@@ -216,6 +221,7 @@ bool GameField::checkColumn(int c)
     {
         tmp_c.push_back(field[r][c].value);
     }
+
     for (int num : tmp_c) {
         if (num == 0) {
             continue;
@@ -230,17 +236,24 @@ bool GameField::checkColumn(int c)
 bool GameField::checkBox(int bn)
 {
     QVector<int> box;
-    int bc=bn%sudokuPower;
-    int br=bn/sudokuPower;
+    int bc=bn%sudokuPower*sudokuPower;
+    int br=bn/sudokuPower*sudokuPower;
     int bcMax=bc+sudokuPower;
     int brMax=br+sudokuPower;
-    for(br; br<brMax; br++)
+    //qInfo()<<"bc= "<<bc<<", br= "<<br<<", bcMax= "<<bcMax<<", brMax= "<<brMax;
+    for(int r=br; r<brMax; r++)
     {
-        for(bc; bc<bcMax; bc++)
+        for(int c=bc; c<bcMax; c++)
         {
-            box.push_back(field[br][bc].value);
+            box.push_back(field[r][c].value);
         }
     }
+//    std::cout<<"Box№ "<<bn<<std::endl;
+//    for (int num : box)
+//    {
+//        std::cout<<num<<" ";
+//    }
+//     std::cout<<std::endl;
     for (int num : box) {
         if (num == 0) {
             continue;
@@ -285,8 +298,9 @@ bool GameField::checkBoxes()
         {
             return false;
         }
+
     }
-     return true;
+    return true;
 }
 
 void GameField::generateBaseField()
@@ -388,4 +402,31 @@ void GameField::hideTiles(int hidenumber)
         hidenumber--;
     }
     }
+}
+bool GameField::checkField()
+{
+    if(checkBoxes())
+    {
+        if(checkRows())
+        {
+            if(checkColumns())
+            {
+                std::cout<<"Everything is alright!"<<std::endl;
+                return true;
+            }
+            else
+            {
+                std::cout<<"Collumns are wrong!"<<std::endl;
+            }
+        }
+        else
+        {
+             std::cout<<"Rows are wrong!"<<std::endl;
+        }
+    }
+    else
+    {
+        std::cout<<"Boxes are wrong!"<<std::endl;
+    }
+    return false;
 }

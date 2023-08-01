@@ -10,9 +10,13 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
@@ -22,7 +26,13 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
+    QPushButton *pushButtonEasy;
+    QPushButton *pushButtonNormal;
+    QPushButton *pushButtonHard;
+    QLabel *label;
+    QPushButton *pushButtonExpert;
     QMenuBar *menubar;
+    QMenu *menuQTSudoku;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -32,13 +42,33 @@ public:
         MainWindow->resize(800, 600);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
+        pushButtonEasy = new QPushButton(centralwidget);
+        pushButtonEasy->setObjectName("pushButtonEasy");
+        pushButtonEasy->setGeometry(QRect(330, 200, 89, 25));
+        pushButtonNormal = new QPushButton(centralwidget);
+        pushButtonNormal->setObjectName("pushButtonNormal");
+        pushButtonNormal->setGeometry(QRect(330, 260, 89, 25));
+        pushButtonHard = new QPushButton(centralwidget);
+        pushButtonHard->setObjectName("pushButtonHard");
+        pushButtonHard->setGeometry(QRect(330, 320, 89, 25));
+        label = new QLabel(centralwidget);
+        label->setObjectName("label");
+        label->setGeometry(QRect(320, 150, 111, 20));
+        pushButtonExpert = new QPushButton(centralwidget);
+        pushButtonExpert->setObjectName("pushButtonExpert");
+        pushButtonExpert->setGeometry(QRect(330, 380, 89, 25));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
+        menubar->setGeometry(QRect(0, 0, 800, 22));
+        menuQTSudoku = new QMenu(menubar);
+        menuQTSudoku->setObjectName("menuQTSudoku");
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
         MainWindow->setStatusBar(statusbar);
+
+        menubar->addAction(menuQTSudoku->menuAction());
 
         retranslateUi(MainWindow);
 
@@ -48,6 +78,12 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        pushButtonEasy->setText(QCoreApplication::translate("MainWindow", "Easy", nullptr));
+        pushButtonNormal->setText(QCoreApplication::translate("MainWindow", "Normal", nullptr));
+        pushButtonHard->setText(QCoreApplication::translate("MainWindow", "Hard", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "Select difficulty:", nullptr));
+        pushButtonExpert->setText(QCoreApplication::translate("MainWindow", "Expert", nullptr));
+        menuQTSudoku->setTitle(QCoreApplication::translate("MainWindow", "QTSudoku", nullptr));
     } // retranslateUi
 
 };

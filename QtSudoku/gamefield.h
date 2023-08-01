@@ -17,6 +17,8 @@ class GameField : public QObject
 {
     Q_OBJECT
 public:
+
+
     explicit GameField(QObject *parent = nullptr);
     void shuffleField();
     void generateSudoku();
@@ -28,7 +30,7 @@ public:
     bool checkRow(int r);
     bool checkColumn(int c);
     bool checkBox(int bn);
-
+    bool checkField();
 
     void generateBaseField();
     void printField();
@@ -53,12 +55,12 @@ public:
     void setNumCols(int c);
 
     void setValue(int r, int c, int num);
-
+    void setDifficulty(difficulty d);
     void shiftRow(int r, int num);
 
     void hideField();
     void hideTiles(int hidenumber);
-    QVector<QVector<Tile>> getField();
+    Q_INVOKABLE QVector<QVector<Tile>> getField();
     void setField(QVector<QVector<Tile>> f);
     GameField(const GameField& gf);
 signals:
