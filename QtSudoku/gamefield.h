@@ -60,6 +60,9 @@ public:
 
     void hideField();
     void hideTiles(int hidenumber);
+
+    void start();
+
     Q_INVOKABLE QVector<QVector<Tile>> getField();
     void setField(QVector<QVector<Tile>> f);
     GameField(const GameField& gf);

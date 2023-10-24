@@ -12,12 +12,14 @@
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -31,6 +33,7 @@ public:
     QPushButton *pushButtonHard;
     QLabel *label;
     QPushButton *pushButtonExpert;
+    QTableWidget *SudokuTable;
     QMenuBar *menubar;
     QMenu *menuQTSudoku;
     QStatusBar *statusbar;
@@ -57,7 +60,20 @@ public:
         pushButtonExpert = new QPushButton(centralwidget);
         pushButtonExpert->setObjectName("pushButtonExpert");
         pushButtonExpert->setGeometry(QRect(330, 380, 89, 25));
+        SudokuTable = new QTableWidget(centralwidget);
+        SudokuTable->setObjectName("SudokuTable");
+        SudokuTable->setGeometry(QRect(30, 10, 150, 150));
+        SudokuTable->setMaximumSize(QSize(16777213, 16777215));
+        SudokuTable->setInputMethodHints(Qt::ImhDigitsOnly);
+        SudokuTable->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        SudokuTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         MainWindow->setCentralWidget(centralwidget);
+        SudokuTable->raise();
+        label->raise();
+        pushButtonEasy->raise();
+        pushButtonExpert->raise();
+        pushButtonHard->raise();
+        pushButtonNormal->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
         menubar->setGeometry(QRect(0, 0, 800, 22));

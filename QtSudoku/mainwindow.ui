@@ -79,6 +79,37 @@
      <string>Expert</string>
     </property>
    </widget>
+   <widget class="QTableWidget" name="SudokuTable">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>150</width>
+      <height>150</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777213</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhDigitsOnly</set>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+   </widget>
+   <zorder>SudokuTable</zorder>
+   <zorder>label</zorder>
+   <zorder>pushButtonEasy</zorder>
+   <zorder>pushButtonExpert</zorder>
+   <zorder>pushButtonHard</zorder>
+   <zorder>pushButtonNormal</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

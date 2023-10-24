@@ -8,7 +8,6 @@ GameField::GameField(QObject *parent)
     sudokuPower=3;
     numRows=sudokuPower*sudokuPower;
     numCols=sudokuPower*sudokuPower;
-    dif=difficulty::Normal;
     fillVecFunc();
     generateBaseField();
 }
@@ -402,6 +401,20 @@ void GameField::hideTiles(int hidenumber)
         hidenumber--;
     }
     }
+}
+
+void GameField::start()
+{
+    shuffleField();
+    if(checkField())
+    {
+        hideField();
+    }
+    else
+    {
+
+    }
+
 }
 bool GameField::checkField()
 {
