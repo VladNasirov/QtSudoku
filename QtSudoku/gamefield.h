@@ -7,6 +7,7 @@
 
 enum class difficulty
 {
+    Unset,
     Easy,
     Normal,
     Hard,
@@ -52,6 +53,10 @@ public:
     void setNumRows(int r);
 
     int getNumCols();
+
+    Tile getValue(int r, int c);
+    Tile getCorrectValue(int r, int c);
+
     void setNumCols(int c);
 
     void setValue(int r, int c, int num);

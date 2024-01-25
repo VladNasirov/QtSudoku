@@ -8,6 +8,9 @@
 #include <QPushButton>
 #include "gamefield.h"
 #include "solver.h"
+#include "tilewidget.h"
+
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -29,6 +32,11 @@ private slots:
 
     void on_pushButtonExpert_clicked();
 
+    void createEmptyField();
+
+    void showField();
+signals:
+    void fieldCreated();
 private:
     Ui::MainWindow *ui;
     QWidget *centralWidget;
@@ -40,6 +48,9 @@ private:
     QPushButton *pushButtonNormal;
     QPushButton *pushButtonHard;
     QPushButton *pushButtonExpert;
+
+    QVector<TileWidget*> tiles;
+
 
     GameField gf;
     Solver s;

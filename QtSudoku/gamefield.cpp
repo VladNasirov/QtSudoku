@@ -46,6 +46,16 @@ int GameField::getNumCols()
     return numCols;
 }
 
+Tile GameField::getValue(int r, int c)
+{
+    return field[r][c];
+}
+
+Tile GameField::getCorrectValue(int r, int c)
+{
+    return correctAnswer[r][c];
+}
+
 void GameField::setNumCols(int c)
 {
     numCols=c;

@@ -12,13 +12,15 @@ SOURCES += \
     gamefield.cpp \
     main.cpp \
     mainwindow.cpp \
-    solver.cpp
+    solver.cpp \
+    tilewidget.cpp
 
 HEADERS += \
     Tile.h \
     gamefield.h \
     mainwindow.h \
-    solver.h
+    solver.h \
+    tilewidget.h
 
 FORMS += \
     mainwindow.ui
@@ -27,6 +29,3 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-DISTFILES += \
-    SudokuGrid.qml
