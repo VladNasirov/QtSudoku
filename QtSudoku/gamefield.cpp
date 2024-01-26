@@ -6,6 +6,7 @@ GameField::GameField(QObject *parent)
     : QObject{parent}
 {
     sudokuPower=3;
+    maxWrongCounter=3;
     numRows=sudokuPower*sudokuPower;
     numCols=sudokuPower*sudokuPower;
     fillVecFunc();
@@ -75,7 +76,10 @@ QVector<QVector<Tile> > GameField::getField()
 {
     return field;
 }
-
+QVector<QVector<Tile>> GameField::getCorrectField()
+{
+    return correctAnswer;
+}
 void GameField::setField(QVector<QVector<Tile>> f)
 {
     field=f;
@@ -104,11 +108,11 @@ void GameField::shuffleField()
     }
 }
 
-void GameField::generateSudoku()
-{
-    shuffleField();
-    correctAnswer=field;
-}
+//void GameField::generateSudoku()
+//{
+//    shuffleField();
+//    correctAnswer=field;
+//}
 
 
 void GameField::transpose()
@@ -360,6 +364,11 @@ void GameField::shiftRow(int row, int shift)
     }
 }
 
+void GameField::setRightAnswer()
+{
+    correctAnswer=field;
+}
+
 void GameField::printField()
 {
     for (int r=0; r<numRows; r++)
@@ -369,6 +378,20 @@ void GameField::printField()
             field[r][c].row=r;
             field[r][c].column=c;
             std::cout<<"["<<field[r][c].row<<field[r][c].column<<"]"<<"="<<field[r][c].value<<" ";
+        }
+        std::cout<<std::endl;
+    }
+}
+
+void GameField::printCorrectField()
+{
+    for (int r=0; r<numRows; r++)
+    {
+        for (int c=0; c<numCols; c++)
+        {
+            correctAnswer[r][c].row=r;
+            correctAnswer[r][c].column=c;
+            std::cout<<"["<<correctAnswer[r][c].row<<correctAnswer[r][c].column<<"]"<<"="<<correctAnswer[r][c].value<<" ";
         }
         std::cout<<std::endl;
     }
@@ -416,15 +439,37 @@ void GameField::hideTiles(int hidenumber)
 void GameField::start()
 {
     shuffleField();
+    setRightAnswer();
     if(checkField())
     {
         hideField();
     }
     else
     {
-
+        qDebug()<<"Problem with the field!!";
     }
 
+}
+
+void GameField::wrongAnswer(QString val)
+{
+    if(val.isEmpty())
+    {
+        qDebug()<<"SLOT recieved "<<val;
+        return;
+    }
+    else
+    {
+
+        //qDebug()<<maxWrongCounter;
+        maxWrongCounter--;
+         qDebug()<<"SLOT recieved "<<val<<" wrong counter="<<maxWrongCounter;
+        if(maxWrongCounter<=0)
+        {
+            emit gameOver();
+            return;
+        }
+    }
 }
 bool GameField::checkField()
 {
@@ -453,3 +498,4 @@ bool GameField::checkField()
     }
     return false;
 }
+

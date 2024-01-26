@@ -35,6 +35,7 @@ public:
 
     void generateBaseField();
     void printField();
+    void printCorrectField();
 
     void swapCols(int index1, int index2);
     void swapRows(int index1, int index2);
@@ -63,18 +64,21 @@ public:
     void setDifficulty(difficulty d);
     void shiftRow(int r, int num);
 
+    void setRightAnswer();
     void hideField();
     void hideTiles(int hidenumber);
 
     void start();
 
     Q_INVOKABLE QVector<QVector<Tile>> getField();
+    QVector<QVector<Tile>> getCorrectField();
     void setField(QVector<QVector<Tile>> f);
-    GameField(const GameField& gf);
+    explicit GameField(const GameField& gf);
 signals:
 
-
-
+    void gameOver();
+public slots:
+    void wrongAnswer(QString val);
 private:
     QVector<QVector<Tile>> field;
     QVector<QVector<Tile>> correctAnswer;
@@ -83,6 +87,8 @@ private:
     int numCols;
     int sudokuPower;
     difficulty dif;
+    int maxWrongCounter;
+
 };
 
 #endif // GAMEFIELD_H

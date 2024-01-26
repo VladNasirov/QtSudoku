@@ -35,6 +35,8 @@ private slots:
     void createEmptyField();
 
     void showField();
+
+    //void wrongAns();
 signals:
     void fieldCreated();
 private:
@@ -50,9 +52,7 @@ private:
     QPushButton *pushButtonExpert;
 
     QVector<TileWidget*> tiles;
-
-
-    GameField gf;
+    GameField* gf;
     Solver s;
 };
 #endif // MAINWINDOW_H

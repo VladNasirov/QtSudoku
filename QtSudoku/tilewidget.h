@@ -12,17 +12,19 @@ class TileWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit TileWidget(Tile til, QWidget *parent = nullptr);
+    explicit TileWidget(Tile til, int corvalue, QWidget *parent = nullptr);
     void setValue(int val);//validator
     void clearValue();
     ~TileWidget();
 public slots:
     //TODO slot for value changed textEdit and add validator here
+    void checkValue(QString value);
 signals:
-
+    void wrongAns(QString val);
 private:
     QColor backgroundClr;
     Tile t;
+    int correctValue;
     int value;
     QLineEdit* text;
     QValidator* validator;

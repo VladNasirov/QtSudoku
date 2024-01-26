@@ -5,9 +5,11 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    gf=new GameField(this);
     //connect(ui->pushButtonEasy, SIGNAL(clicked()), this, SLOT(toggleTableLayout()));
     connect(this, SIGNAL(fieldCreated()), this, SLOT(createEmptyField()));
-    connect(this, SIGNAL(fieldCreated()), this, SLOT(showField()));
+    //connect(this, SIGNAL(fieldCreated()), this, SLOT(showField()));
+
     ui->setupUi(this);
     ui->GameTab->setCurrentIndex(0);
     setCentralWidget(ui->GameTab);
@@ -18,17 +20,18 @@ void MainWindow::toggleTableLayout() {
 }
 MainWindow::~MainWindow()
 {
+    delete gf;
     delete ui;
 }
 
 
 void MainWindow::on_pushButtonEasy_clicked()
 {
-    gf.setDifficulty(difficulty::Easy);
-    gf.start();
+    gf->setDifficulty(difficulty::Easy);
+    gf->start();
     emit fieldCreated();
-    //ui->SudokuTable->setRowCount(gf.getNumRows());
-    //ui->SudokuTable->setColumnCount(gf.getNumCols());
+    //ui->SudokuTable->setRowCount(gf->getNumRows());
+    //ui->SudokuTable->setColumnCount(gf->getNumCols());
     //ui->SudokuTable->horizontalHeader()->hide();
    // ui->SudokuTable->verticalHeader()->hide();
 
@@ -40,8 +43,8 @@ void MainWindow::on_pushButtonEasy_clicked()
 
 void MainWindow::on_pushButtonNormal_clicked()
 {
-    gf.setDifficulty(difficulty::Normal);
-    gf.start();
+    gf->setDifficulty(difficulty::Normal);
+    gf->start();
     emit fieldCreated();
     //ui->SudokuTable->show();
 }
@@ -49,8 +52,8 @@ void MainWindow::on_pushButtonNormal_clicked()
 
 void MainWindow::on_pushButtonHard_clicked()
 {
-    gf.setDifficulty(difficulty::Hard);
-    gf.start();
+    gf->setDifficulty(difficulty::Hard);
+    gf->start();
     emit fieldCreated();
     //ui->SudokuTable->show();
 }
@@ -58,8 +61,8 @@ void MainWindow::on_pushButtonHard_clicked()
 
 void MainWindow::on_pushButtonExpert_clicked()
 {
-    gf.setDifficulty(difficulty::Expert);
-    gf.start();
+    gf->setDifficulty(difficulty::Expert);
+    gf->start();
     emit fieldCreated();
     //ui->SudokuTable->show();
 }
@@ -82,18 +85,20 @@ void MainWindow::createEmptyField()
     vlay->addWidget(fieldFrame);
 
     //maybe also fill
-    for(int r=0; r<gf.getNumRows(); r++)
-        for(int c=0; c<gf.getNumCols(); c++)
+    gf->printField();
+    gf->printCorrectField();
+    for(int r=0; r<gf->getNumRows(); r++)
+        for(int c=0; c<gf->getNumCols(); c++)
     {
-        TileWidget* tile=new TileWidget(gf.getValue(r, c), this);
+
+        TileWidget* tile=new TileWidget(gf->getValue(r, c), gf->getCorrectValue(r, c).value,this);
+        connect(tile, SIGNAL(wrongAns(QString)), gf, SLOT(wrongAnswer(QString)));
+        qDebug()<<"At r="<<r<<" and c="<<c<<" Field val="<<gf->getValue(r, c).value<<"Correct field val"<<gf->getCorrectValue(r, c).value;
         layout->addWidget(tile, r, c);
         tiles.push_back(tile);
     }
-        //fieldFrame->setLayout(fieldlayout);
-      //  ui->FieldTab->activateWindow();
     ui->GameTab->setCurrentIndex(1);
-    //ui->GameTab->update();
-    //ui->FieldTab->update();
+
 }
 
 void MainWindow::showField()

@@ -13,6 +13,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     solver.cpp \
+    sudokutimer.cpp \
     tilewidget.cpp
 
 HEADERS += \
@@ -20,6 +21,7 @@ HEADERS += \
     gamefield.h \
     mainwindow.h \
     solver.h \
+    sudokutimer.h \
     tilewidget.h
 
 FORMS += \
